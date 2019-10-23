@@ -1,6 +1,4 @@
 import json
-from collections import OrderedDict
-from datetime import datetime
 
 from google.cloud import storage
 
@@ -37,3 +35,4 @@ def run():
     except json.decoder.JSONDecodeError as e:
         logger.critical(f"Error decoding JSON: {e}")
         exit()
+    return contents_json

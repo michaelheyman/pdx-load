@@ -1,8 +1,6 @@
-import mock
-import pytest
+import unittest.mock as mock
 
 from app import main
-from tests import mocks
 
 
 @mock.patch("google.cloud.storage.Client")
