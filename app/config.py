@@ -16,4 +16,5 @@ def map_level(level):
 
 
 LOGGING_LEVEL = map_level(os.environ.get("LOGGING_LEVEL", "debug"))
+MAX_TERMS = os.environ.get("MAX_TERMS", 1)
 PROCESSED_BUCKET_NAME = os.environ.get("BUCKET_NAME", "pdx-schedule-processed-data")

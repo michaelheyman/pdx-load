@@ -41,3 +41,31 @@ def test_get_latest_blob_returns_latest_blob_when_multiple_exist(mock_storage_cl
     assert mock_storage_client().lookup_bucket.called is True
     assert mock_storage_client().list_blobs.called is True
     assert latest_blob.name == "1234567890.json"
+
+
+def test_parse_terms_into_instructors_returns_instructor_list():
+    instructor_alice = {
+        "fullName": "Alice A",
+        "firstName": "Alice",
+        "lastName": "A",
+        "rating": 5.0,
+        "rmpId": 12345,
+    }
+    instructor_bob = {
+        "fullName": "Bob B",
+        "firstName": "Bob",
+        "lastName": "B",
+        "rating": 4.0,
+        "rmpId": 98765,
+    }
+    instructor_charlie = "Charlie C"
+    contents = [
+        {"number": 123, "crn": 12345, "name": "foo", "instructor": instructor_alice},
+        {"number": 456, "crn": 98765, "name": "bar", "instructor": instructor_bob},
+        {"number": 789, "crn": 19283, "name": "baz", "instructor": instructor_charlie},
+    ]
+
+    instructors = main.parse_terms_into_instructors(contents)
+
+    assert instructors == [instructor_alice, instructor_bob, instructor_charlie]
+
