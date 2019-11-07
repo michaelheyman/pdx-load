@@ -4,9 +4,8 @@ from google.cloud import firestore
 from google.cloud import storage
 
 from app import config
-
-# from app.firestore import Firestore
 from app.logger import logger
+# from app.firestore import Firestore
 
 example_data = [
     [
@@ -23,10 +22,10 @@ example_data = [
                 "firstName": "Marilyn",
                 "lastName": "Johnson",
                 "rating": 2.88,
-                "rmpId": 497275,
+                "rmpId": 497_275,
             },
             "term_description": "Fall 2019",
-            "term_date": 201904,
+            "term_date": 201_904,
         },
         {
             "number": "ACTG 281",
@@ -41,10 +40,10 @@ example_data = [
                 "firstName": "Marilyn",
                 "lastName": "Johnson",
                 "rating": 2.88,
-                "rmpId": 497275,
+                "rmpId": 497_275,
             },
             "term_description": "Fall 2019",
-            "term_date": 201904,
+            "term_date": 201_904,
         },
     ]
 ]

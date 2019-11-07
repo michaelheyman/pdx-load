@@ -1,5 +1,6 @@
-import app.config as config
 from google.cloud import firestore
+
+import app.config as config
 from app.logger import LOG
 
 

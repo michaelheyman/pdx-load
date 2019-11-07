@@ -68,4 +68,3 @@ def test_parse_terms_into_instructors_returns_instructor_list():
     instructors = main.parse_terms_into_instructors(contents)
 
     assert instructors == [instructor_alice, instructor_bob, instructor_charlie]
-
