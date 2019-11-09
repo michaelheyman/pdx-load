@@ -1,22 +1,14 @@
 from datetime import datetime
 
 from sqlalchemy import Column
-from sqlalchemy import create_engine
 from sqlalchemy import DateTime
 from sqlalchemy import Float
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import String
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy.orm import sessionmaker
 
-from app import config
-
-engine = create_engine(f"sqlite:///{config.DATABASE_PATH}", echo=False)
-Base = declarative_base()
-Session = sessionmaker(bind=engine)
-DBSession = Session()
+from app.database import Base
 
 
 class ClassOffering(Base):
@@ -97,7 +89,3 @@ class Term(Base):
 
     def __repr__(self):
         return f"<Term(date={self.date}, " f"description={self.description}>"
-
-
-def initialize_database():
-    Base.metadata.create_all(engine)

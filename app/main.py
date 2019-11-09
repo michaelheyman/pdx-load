@@ -4,10 +4,10 @@ import os
 from google.cloud import storage
 
 from app import config
+from app.database import initialize_database
 from app.logger import logger
 from app.manager import ClassOfferingMgr
 from app.manager import CourseMgr
-from app.manager import initialize_database
 from app.manager import InstructorMgr
 from app.manager import TermMgr
 
