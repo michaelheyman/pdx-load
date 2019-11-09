@@ -4,12 +4,12 @@ import os
 from google.cloud import storage
 
 from app import config
-from app.database import ClassOfferingMgr
-from app.database import CourseMgr
-from app.database import initialize_database
-from app.database import InstructorMgr
-from app.database import TermMgr
 from app.logger import logger
+from app.manager import ClassOfferingMgr
+from app.manager import CourseMgr
+from app.manager import initialize_database
+from app.manager import InstructorMgr
+from app.manager import TermMgr
 
 
 def get_latest_blob():
