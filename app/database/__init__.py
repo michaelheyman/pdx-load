@@ -5,11 +5,20 @@ from sqlalchemy.orm import sessionmaker
 from app import config
 
 
-engine = create_engine(f"sqlite:///{config.DATABASE_PATH}", echo=False)
-Base = declarative_base()
-Session = sessionmaker(bind=engine)
-DBSession = Session()
+class DataAccessLayer:
+    # https://www.oreilly.com/library/view/essential-sqlalchemy-2nd/9781491916544/ch04.html
+    Base = declarative_base()
+    conn_string = f"sqlite:///{config.DATABASE_PATH}"
+    connection = None
+    engine = None
+    Session = None
+    DBSession = None
+
+    def db_init(self, conn_string=None):
+        self.engine = create_engine(conn_string or self.conn_string, echo=False)
+        self.Base.metadata.create_all(self.engine)
+        self.Session = sessionmaker(bind=self.engine)
+        self.DBSession = self.Session()
 
 
-def initialize_database():
-    Base.metadata.create_all(engine)
+dal = DataAccessLayer()

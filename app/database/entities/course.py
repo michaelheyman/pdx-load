@@ -2,10 +2,10 @@ from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
 
-from app.database import Base
+from app.database import dal
 
 
-class Course(Base):
+class Course(dal.Base):
     __tablename__ = "Course"
 
     course_id = Column("CourseId", Integer, primary_key=True)

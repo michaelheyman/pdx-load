@@ -7,10 +7,10 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy.orm import relationship
 
-from app.database import Base
+from app.database import dal
 
 
-class ClassOffering(Base):
+class ClassOffering(dal.Base):
     __tablename__ = "ClassOffering"
 
     class_offering_id = Column("ClassOfferingId", Integer, primary_key=True)

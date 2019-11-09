@@ -6,10 +6,10 @@ from sqlalchemy import Float
 from sqlalchemy import Integer
 from sqlalchemy import String
 
-from app.database import Base
+from app.database import dal
 
 
-class Instructor(Base):
+class Instructor(dal.Base):
     __tablename__ = "Instructor"
 
     instructor_id = Column("InstructorId", Integer, primary_key=True)

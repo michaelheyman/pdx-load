@@ -4,7 +4,7 @@ import os
 from google.cloud import storage
 
 from app import config
-from app.database import initialize_database
+from app.database import dal
 from app.database.manager import ClassOfferingMgr
 from app.database.manager import CourseMgr
 from app.database.manager import InstructorMgr
@@ -121,7 +121,7 @@ def cleanup_lambda_files():
 def run():
     contents = load_local_file()  # TODO: remove after testing
     cleanup_lambda_files()
-    initialize_database()
+    dal.db_init()
     for term in contents:
         for course in term:
             save_to_database(course)

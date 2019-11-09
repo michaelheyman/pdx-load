@@ -2,10 +2,10 @@ from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
 
-from app.database import Base
+from app.database import dal
 
 
-class Term(Base):
+class Term(dal.Base):
     __tablename__ = "Term"
 
     date = Column("Date", Integer, primary_key=True)
