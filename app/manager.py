@@ -1,10 +1,10 @@
 from datetime import datetime
 
 from app.database import DBSession
-from app.database.model import ClassOffering
-from app.database.model import Course
-from app.database.model import Instructor
-from app.database.model import Term
+from app.database.entities import ClassOffering
+from app.database.entities import Course
+from app.database.entities import Instructor
+from app.database.entities import Term
 from app.logger import logger
 
 
