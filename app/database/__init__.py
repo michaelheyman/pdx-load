@@ -8,7 +8,7 @@ from app import config
 class DataAccessLayer:
     # https://www.oreilly.com/library/view/essential-sqlalchemy-2nd/9781491916544/ch04.html
     Base = declarative_base()
-    conn_string = f"sqlite:///{config.DATABASE_PATH}"
+    conn_string = f"sqlite:///{config.DATABASE_FILE}"
     connection = None
     engine = None
     Session = None

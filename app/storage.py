@@ -33,7 +33,7 @@ def upload_to_bucket():
     Uploads database to Cloud Storage bucket.
     """
     storage_client = storage.Client()
-    bucket_name = config.BUCKET_NAME
+    bucket_name = config.DATABASE_BUCKET_NAME
     bucket = storage_client.lookup_bucket(bucket_name)
 
     if bucket is None:
@@ -44,8 +44,8 @@ def upload_to_bucket():
 
     filename = utils.generate_filename()
 
-    blob = bucket.blob(config.DATABASE_PATH)
-    blob.upload_from_filename(config.DATABASE_PATH)
+    blob = bucket.blob(config.DATABASE_FILE)
+    blob.upload_from_filename(config.DATABASE_FILE)
     bucket.rename_blob(blob, filename)
 
     logger.debug("File {} uploaded to {}.".format(filename, bucket_name))

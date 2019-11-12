@@ -40,7 +40,7 @@ def extract_metadata(contents):
 def cleanup_lambda_files():
     # this won't be necessary in the lambda because it won't save state
     try:
-        os.remove(config.DATABASE_PATH)
+        os.remove(config.DATABASE_FILE)
     except FileNotFoundError:
         pass
 

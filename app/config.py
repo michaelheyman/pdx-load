@@ -1,5 +1,9 @@
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 def map_level(level):
     """ Maps logging level strings to logging level codes
@@ -15,9 +19,11 @@ def map_level(level):
     )
 
 
-BUCKET_NAME = os.environ.get("DATABASE_PATH", "pdx-schedule-database")
-DATABASE_PATH = os.environ.get("DATABASE_PATH", "app.db")
+DATABASE_BUCKET_NAME = os.environ.get("DATABASE_BUCKET_NAME", "pdx-schedule-database")
+DATABASE_FILE = os.environ.get("DATABASE_FILE", "app.db")
 LOGGING_LEVEL = map_level(os.environ.get("LOGGING_LEVEL", "debug"))
 MAX_TERMS = int(os.environ.get("MAX_TERMS", "1"))
 PROJECT_DIR = os.path.abspath(os.curdir)
-PROCESSED_BUCKET_NAME = os.environ.get("BUCKET_NAME", "pdx-schedule-processed-data")
+PROCESSED_BUCKET_NAME = os.environ.get(
+    "PROCESSED_BUCKET_NAME", "pdx-schedule-processed-data"
+)
