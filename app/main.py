@@ -2,21 +2,13 @@ import json
 import os
 
 from app import config
+from app import storage
 from app.database import dal
 from app.database.manager import ClassOfferingMgr
 from app.database.manager import CourseMgr
 from app.database.manager import InstructorMgr
 from app.database.manager import TermMgr
-
-
-def load_local_file():
-    local_file = "snapshot.json"
-    local_filename = os.path.join(config.PROJECT_DIR, local_file)
-    res = None
-    with open(local_filename) as infile:
-        res = json.load(infile)
-
-    return res
+from app.logger import logger
 
 
 def get_unique_instructors(instructor_list):
@@ -50,7 +42,9 @@ def extract_metadata(contents):
 
 
 def write_to_database(contents):
-    terms, courses, instructors = extract_metadata(contents)
+    for term_code, term in contents.items():
+        for course in term:
+            save_to_database(course)
 
 
 def save_to_database(course):
@@ -95,19 +89,17 @@ def cleanup_lambda_files():
 
 
 def run():
-    contents = load_local_file()  # TODO: remove after testing
     cleanup_lambda_files()
-    dal.db_init()
-    for term in contents:
-        for course in term:
-            save_to_database(course)
-    # write_to_database(contents)
 
-    # latest_blob = storage.get_latest_blob()
-    # contents = latest_blob.download_as_string()
-    # try:
-    #     contents_json = json.loads(contents)
-    # except json.decoder.JSONDecodeError as e:
-    #     logger.critical(f"Error decoding JSON: {e}")
-    #     exit()
-    # return contents_json
+    latest_blob = storage.get_latest_blob()
+    contents = latest_blob.download_as_string()
+    try:
+        contents_json = json.loads(contents)
+    except json.decoder.JSONDecodeError as e:
+        logger.critical(f"Error decoding JSON: {e}")
+        exit()
+
+    dal.db_init()
+    write_to_database(contents_json)
+
+    return contents_json
