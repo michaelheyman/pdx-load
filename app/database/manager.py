@@ -107,7 +107,7 @@ class InstructorMgr:
         return Instructor(
             full_name=instructor["fullName"],
             first_name=instructor["firstName"],
-            last_name=instructor["firstName"],
+            last_name=instructor["lastName"],
             rating=instructor["rating"],
             url=f"http://www.ratemyprofessors.com/ShowRatings.jsp?tid={instructor['rmpId']}",
         )
