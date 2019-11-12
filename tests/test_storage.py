@@ -30,9 +30,9 @@ def test_get_latest_blob_returns_blob_when_only_one_blob_exists(mock_storage_cli
 @mock.patch("google.cloud.storage.Client")
 def test_get_latest_blob_returns_latest_blob_when_multiple_exist(mock_storage_client):
     mock_blob_latest = mock.Mock()
-    mock_blob_latest.name = "1234567890.json"
+    mock_blob_latest.name = "1234567890.db"
     mock_blob_oldest = mock.Mock()
-    mock_blob_oldest.name = "1000000000.json"
+    mock_blob_oldest.name = "1000000000.db"
     mock_storage_client().lookup_bucket.return_value = "test-bucket"
     mock_storage_client().list_blobs.return_value = [mock_blob_oldest, mock_blob_latest]
 
@@ -40,7 +40,7 @@ def test_get_latest_blob_returns_latest_blob_when_multiple_exist(mock_storage_cl
 
     assert mock_storage_client().lookup_bucket.called is True
     assert mock_storage_client().list_blobs.called is True
-    assert latest_blob.name == "1234567890.json"
+    assert latest_blob.name == "1234567890.db"
 
 
 @mock.patch("google.cloud.storage.Client")
@@ -49,9 +49,8 @@ def test_upload_to_bucket_returns_none_when_no_bucket(mock_storage_client):
     mock_created_bucket.name = "test-bucket"
     mock_storage_client().lookup_bucket.return_value = None
     mock_storage_client().create_bucket.return_value = mock_created_bucket
-    contents = {"foo": "bar"}
 
-    storage.upload_to_bucket(contents)
+    storage.upload_to_bucket()
 
     assert mock_storage_client().lookup_bucket.called is True
     assert mock_storage_client().create_bucket.called is True
@@ -68,10 +67,9 @@ def test_upload_to_bucket_runs_until_end(
     bucket_blob = mock.Mock()
     lookup_bucket.blob.return_value = bucket_blob
     mock_storage_client().lookup_bucket.return_value = lookup_bucket
-    mock_generate_filename.return_value = "1234567890.json"
-    contents = {"foo": "bar"}
+    mock_generate_filename.return_value = "1234567890.db"
 
-    storage.upload_to_bucket(contents)
+    storage.upload_to_bucket()
 
     assert mock_storage_client().lookup_bucket.called is True
     assert mock_storage_client().create_bucket.called is False

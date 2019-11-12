@@ -28,14 +28,10 @@ def get_latest_blob():
     return latest_blob
 
 
-def upload_to_bucket(contents):
+def upload_to_bucket():
     """
-    Uploads contents to Cloud Storage bucket.
-
-    Parameters:
-        contents (Object): The contents to put in the bucket
+    Uploads database to Cloud Storage bucket.
     """
-    assert isinstance(contents, (dict)), f"Expected dict but got {type(contents)}"
     storage_client = storage.Client()
     bucket_name = config.BUCKET_NAME
     bucket = storage_client.lookup_bucket(bucket_name)
@@ -47,17 +43,12 @@ def upload_to_bucket(contents):
         logger.debug("Bucket {} already exists.".format(bucket.name))
 
     filename = utils.generate_filename()
-    term_code = next(iter(contents))
 
-    lambda_filename = write_lambda_file(filename, contents)
+    blob = bucket.blob(config.DATABASE_PATH)
+    blob.upload_from_filename(config.DATABASE_PATH)
+    bucket.rename_blob(blob, filename)
 
-    blob = bucket.blob(filename)
-    # uploads the file in the cloud function to cloud storage
-    blob.upload_from_filename(lambda_filename)
-    renamed_filename = f"{term_code}/{filename}"
-    bucket.rename_blob(blob, renamed_filename)
-
-    logger.debug("File {} uploaded to {}.".format(renamed_filename, bucket_name))
+    logger.debug("File {} uploaded to {}.".format(filename, bucket_name))
 
 
 def write_lambda_file(filename, contents):

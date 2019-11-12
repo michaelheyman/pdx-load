@@ -10,4 +10,4 @@ def test_generate_filename_generates_formatted_timestamp(mock_timestamp):
     filename = utils.generate_filename()
 
     assert mock_timestamp.called is True
-    assert filename == "20190417194555.json"
+    assert filename == "20190417194555.db"

@@ -57,5 +57,6 @@ def run():
         exit()
 
     store.write_to_database(contents_json)
+    storage.upload_to_bucket()
 
     return contents_json

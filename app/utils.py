@@ -17,4 +17,4 @@ def generate_filename():
     timestamp = get_current_timestamp()
     date = datetime.fromtimestamp(timestamp).strftime(date_format)
 
-    return f"{date}.json"
+    return f"{date}.db"
