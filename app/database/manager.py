@@ -13,6 +13,18 @@ class ClassOfferingMgr:
     def add_class_offering(
         course_name, course_number, instructor_name, term, credits, days, time, crn
     ):
+        """Adds a ClassOffering to the database
+
+        :param course_name: Name of the course
+        :param course_number: Number of the course
+        :param instructor_name: Name of the instructor
+        :param term: Term code
+        :param credits: Number of credits
+        :param days: Days the class is offered
+        :param time: Time the class is offered at
+        :param crn: CRN of the class
+        :return: Database record of the inserted ClassOffering
+        """
         course_id = (
             dal.DBSession.query(Course.course_id)
             .filter(Course.name == course_name, Course.number == course_number)
@@ -60,6 +72,13 @@ class ClassOfferingMgr:
 class CourseMgr:
     @staticmethod
     def add_course(name, number, discipline):
+        """Adds a Course to the database.
+
+        :param name: Name of the course
+        :param number: Number of the course
+        :param discipline: Discipline of the course
+        :return: None
+        """
         exists = (
             dal.DBSession.query(Course)
             .filter(
@@ -79,6 +98,11 @@ class CourseMgr:
 class InstructorMgr:
     @staticmethod
     def add_instructor(instructor):
+        """Adds an Instructor to the database.
+
+        :param instructor: Instructor dictionary
+        :return: Database record of the inserted Instructor
+        """
         instructor_record = (
             dal.DBSession.query(Instructor)
             .filter(Instructor.full_name == instructor["fullName"])
@@ -97,6 +121,11 @@ class InstructorMgr:
 
     @staticmethod
     def create_instructor(instructor):
+        """Creates an instructor
+
+        :param instructor: Instructor dictionary
+        :return: Instructor ORM representation
+        """
         if all("fullName" in key for key in instructor.keys()):
             logger.info(
                 "No metadata for this instructor",
@@ -116,6 +145,12 @@ class InstructorMgr:
 class TermMgr:
     @staticmethod
     def add_term(date, description):
+        """Adds a Term to the database
+
+        :param date: Date of the term
+        :param description: Descriptoin of the term
+        :return: Database record of the inserted Term
+        """
         term_record = (
             dal.DBSession.query(Term)
             .filter(Term.date == date, Term.description == description)

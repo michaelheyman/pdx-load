@@ -8,6 +8,11 @@ from app.logger import logger
 
 
 def get_unique_instructors(instructor_list):
+    """Transforms a list of instructors into a list of unique instructors
+
+    :param instructor_list: List of instructors
+    :return: Unique list of instructors
+    """
     instructors = []
     for inst in instructor_list:
         instructors.append(inst)
@@ -16,6 +21,11 @@ def get_unique_instructors(instructor_list):
 
 
 def filter_instructor_name(instructors):
+    """Filters instructors by name
+
+    :param instructors: List of instructors
+    :return: List of instructors with unique names
+    """
     return list({v["fullName"]: v for v in instructors}.values())
 
 
@@ -25,7 +35,6 @@ def extract_metadata(contents):
     :param contents: Bucket metadata
     :return: list of terms, courses, and instructors
     """
-
     terms = []
     instructors = []
     courses = []
@@ -46,6 +55,10 @@ def cleanup_lambda_files():
 
 
 def run():
+    """Runs the application
+
+    :return: JSON representation of bucket contents
+    """
     cleanup_lambda_files()
 
     latest_blob = storage.get_latest_blob()

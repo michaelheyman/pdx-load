@@ -8,10 +8,9 @@ from app.logger import logger
 
 
 def get_latest_blob():
-    """ Gets the latest blob found in the unprocessed bucket
+    """Gets the latest blob found in the processed bucket
 
-    Return:
-        Blob: A blob representing the object in the bucket
+    :return: A blob representing the object in the bucket
     """
     storage_client = storage.Client()
     bucket_name = config.PROCESSED_BUCKET_NAME
@@ -29,9 +28,7 @@ def get_latest_blob():
 
 
 def upload_to_bucket():
-    """
-    Uploads database to Cloud Storage bucket.
-    """
+    """Uploads database to Cloud Storage bucket."""
     storage_client = storage.Client()
     bucket_name = config.DATABASE_BUCKET_NAME
     bucket = storage_client.lookup_bucket(bucket_name)
@@ -52,14 +49,14 @@ def upload_to_bucket():
 
 
 def write_lambda_file(filename, contents):
-    """ Saves content to lambda filename.
+    """Saves content to lambda filename.
 
     Saves contents to a filename and writes them to a /tmp/ directory in the Cloud Function.
     Cloud Functions only have write access to their /tmp/ directory.
 
-    Parameters:
-        filename (String): The filename to write the data to.
-        contents (Object): The contents to put in the bucket.
+    :param filename: The filename to write the data to.
+    :param contents: The contents to put in the bucket.
+    :return: The filename that the contents are written to.
     """
     lambda_filename = f"/tmp/{filename}"
 

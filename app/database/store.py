@@ -6,6 +6,11 @@ from app.database.manager import TermMgr
 
 
 def write_to_database(contents):
+    """Writes term contents to database.
+
+    :param contents: Dictionary of terms
+    :return: None
+    """
     dal.db_init()
 
     for term_code, term in contents.items():
@@ -14,6 +19,11 @@ def write_to_database(contents):
 
 
 def save_to_database(course):
+    """Saves course to database.
+
+    :param course: Course dictionary.
+    :return: None
+    """
     if course["instructor"] is None:  # NOTE: are there ever NO instructors?
         CourseMgr.add_course(
             name=course["name"],
