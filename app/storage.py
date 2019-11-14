@@ -1,3 +1,4 @@
+import itertools
 import json
 
 from google.cloud import storage
@@ -7,11 +8,18 @@ from app import utils
 from app.logger import logger
 
 
-def get_latest_blob():
-    """Gets the latest blob found in the processed bucket
+def get_latest_blobs_by_term():
+    """Gets the latest blobs found in the processed bucket
 
-    :return: A blob representing the object in the bucket
+    Returns a list of filenames that are the most recent file created
+    for each term
+
+    :return: A list blob representing the latest objects in the bucket
     """
+
+    def term_code(blob_name):
+        return blob_name.split("/")[0]
+
     storage_client = storage.Client()
     bucket_name = config.PROCESSED_BUCKET_NAME
     bucket = storage_client.lookup_bucket(bucket_name)
@@ -21,10 +29,15 @@ def get_latest_blob():
         return None
 
     blobs = list(storage_client.list_blobs(bucket_name))
+    blobs.sort(key=lambda x: x.name)
     logger.debug(f"blobs {blobs}")
-    latest_blob = max(blobs, key=lambda x: x.name, default=None)
 
-    return latest_blob
+    latest_blobs = [
+        max(group, key=lambda x: x.name, default=None)
+        for key, group in itertools.groupby(blobs, lambda x: term_code(x.name))
+    ]
+
+    return latest_blobs
 
 
 def upload_to_bucket():

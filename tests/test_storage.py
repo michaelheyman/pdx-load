@@ -4,43 +4,77 @@ from app import storage
 
 
 @mock.patch("google.cloud.storage.Client")
-def test_get_latest_blob_returns_none_when_bucket_does_not_exist(mock_storage_client):
+def test_get_latest_blobs_by_term_returns_none_when_bucket_does_not_exist(
+    mock_storage_client
+):
     mock_storage_client().lookup_bucket.return_value = None
 
-    latest_blob = storage.get_latest_blob()
+    latest_blob = storage.get_latest_blobs_by_term()
 
     assert mock_storage_client().lookup_bucket.called is True
     assert latest_blob is None
 
 
 @mock.patch("google.cloud.storage.Client")
-def test_get_latest_blob_returns_blob_when_only_one_blob_exists(mock_storage_client):
+def test_get_latest_blobs_by_term_returns_blob_when_only_one_blob_exists(
+    mock_storage_client
+):
     mock_blob = mock.Mock()
-    mock_blob.name = "1234567890.json"
+    mock_blob.name = "123/4567890.json"
     mock_storage_client().lookup_bucket.return_value = "test-bucket"
     mock_storage_client().list_blobs.return_value = [mock_blob]
 
-    latest_blob = storage.get_latest_blob()
+    latest_blobs = storage.get_latest_blobs_by_term()
 
     assert mock_storage_client().lookup_bucket.called is True
     assert mock_storage_client().list_blobs.called is True
-    assert latest_blob.name == "1234567890.json"
+    assert latest_blobs[0].name == "123/4567890.json"
 
 
 @mock.patch("google.cloud.storage.Client")
-def test_get_latest_blob_returns_latest_blob_when_multiple_exist(mock_storage_client):
+def test_get_latest_blobs_by_term_returns_latest_blob_when_multiple_exist_in_the_same_term(
+    mock_storage_client
+):
     mock_blob_latest = mock.Mock()
-    mock_blob_latest.name = "1234567890.db"
+    mock_blob_latest.name = "123/4567890.db"
     mock_blob_oldest = mock.Mock()
-    mock_blob_oldest.name = "1000000000.db"
+    mock_blob_oldest.name = "123/0000000.db"
     mock_storage_client().lookup_bucket.return_value = "test-bucket"
     mock_storage_client().list_blobs.return_value = [mock_blob_oldest, mock_blob_latest]
 
-    latest_blob = storage.get_latest_blob()
+    latest_blobs = storage.get_latest_blobs_by_term()
 
     assert mock_storage_client().lookup_bucket.called is True
     assert mock_storage_client().list_blobs.called is True
-    assert latest_blob.name == "1234567890.db"
+    assert len(latest_blobs) == 1
+    assert latest_blobs[0].name == "123/4567890.db"
+
+
+@mock.patch("google.cloud.storage.Client")
+def test_get_latest_blobs_by_term_returns_latest_blob_by_term(mock_storage_client):
+    mock_blob_one_latest = mock.Mock()
+    mock_blob_one_latest.name = "123/4567890.db"
+    mock_blob_one_oldest = mock.Mock()
+    mock_blob_one_oldest.name = "123/0000000.db"
+    mock_blob_two_latest = mock.Mock()
+    mock_blob_two_latest.name = "100/4567890.db"
+    mock_blob_two_oldest = mock.Mock()
+    mock_blob_two_oldest.name = "100/0000000.db"
+    mock_storage_client().lookup_bucket.return_value = "test-bucket"
+    mock_storage_client().list_blobs.return_value = [
+        mock_blob_one_oldest,
+        mock_blob_one_latest,
+        mock_blob_two_oldest,
+        mock_blob_two_latest,
+    ]
+
+    latest_blobs = storage.get_latest_blobs_by_term()
+
+    assert mock_storage_client().lookup_bucket.called is True
+    assert mock_storage_client().list_blobs.called is True
+    assert len(latest_blobs) == 2
+    assert latest_blobs[0].name == "100/4567890.db"
+    assert latest_blobs[1].name == "123/4567890.db"
 
 
 @mock.patch("google.cloud.storage.Client")

@@ -5,17 +5,18 @@ from app.database.manager import InstructorMgr
 from app.database.manager import TermMgr
 
 
-def write_to_database(contents):
-    """Writes term contents to database.
+def write_to_database(terms):
+    """Writes terms contents to database.
 
-    :param contents: Dictionary of terms
+    :param terms: List of terms
     :return: None
     """
     dal.db_init()
 
-    for term_code, term in contents.items():
-        for course in term:
-            save_to_database(course)
+    for term in terms:
+        for term_code, term_data in term.items():
+            for course in term_data:
+                save_to_database(course)
 
 
 def save_to_database(course):

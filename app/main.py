@@ -61,15 +61,15 @@ def run():
     """
     cleanup_lambda_files()
 
-    latest_blob = storage.get_latest_blob()
-    contents = latest_blob.download_as_string()
+    latest_blobs = storage.get_latest_blobs_by_term()
+    terms = [blob.download_as_string() for blob in latest_blobs]
     try:
-        contents_json = json.loads(contents)
+        terms_json = [json.loads(term) for term in terms]
     except json.decoder.JSONDecodeError as e:
         logger.critical(f"Error decoding JSON: {e}")
         exit()
 
-    store.write_to_database(contents_json)
+    store.write_to_database(terms_json)
     storage.upload_to_bucket()
 
-    return contents_json
+    return terms_json
