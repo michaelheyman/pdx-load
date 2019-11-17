@@ -1,5 +1,5 @@
 from app import main
 
 
-def load(context):
+def load(event, context):
     main.run()
