@@ -138,7 +138,7 @@ class InstructorMgr:
             first_name=instructor["firstName"],
             last_name=instructor["lastName"],
             rating=instructor["rating"],
-            url=f"http://www.ratemyprofessors.com/ShowRatings.jsp?tid={instructor['rmpId']}",
+            url=f"https://www.ratemyprofessors.com/ShowRatings.jsp?tid={instructor['rmpId']}",
         )
 
 
